@@ -10,12 +10,7 @@ public class Solution
         TotalRows = numRows;
 
         retVal = [];
-        /*
-        for (int i = 1; i <= numRows; i++)
-        {
-            retVal.Add(new List<int>(new int[i]));
-        }
-        */
+
         retVal.Add(new List<int>(new int[] { 1 }));
         Traverse(1);
 

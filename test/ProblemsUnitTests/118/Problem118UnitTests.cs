@@ -14,9 +14,11 @@ public class Problem118UnitTests
     public void Test1(int input, int[] expArray)
     {
         List<List<int>> expected = [];
-        for (int i = 0; i <= input; i++)
+        int SkipSum = 0;
+        for (int i = 0; i < input; i++)
         {
-            expected.Add(new List<int>(expArray.Skip(i).Take(i + 1)));
+            expected.Add(new List<int>(expArray.Skip(SkipSum).Take(i + 1)));
+            SkipSum += i + 1;
         }
         Assert.That(new Solution().Generate(input), Is.EqualTo(expected));
     }
