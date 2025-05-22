@@ -10,51 +10,39 @@ public class Problem1116UnitTests
     {
     }
 
+    [TestCase(1, "01")]
     [TestCase(2, "0102")]
     [TestCase(5, "0102030405")]
     public void Test1(int input, string expected)
     {
         Task[] tasks = new Task[3];
-        int sleepTimeout = 200;
         var ZeroEvenOdd = new ZeroEvenOdd(input);
         tasks[0] = Task.Run(() =>
         {
-            for (int i = 0; i < input; i++)
+            ZeroEvenOdd.Zero(x =>
             {
-                ZeroEvenOdd.Zero(x =>
-                {
-                    if (x != 0)
-                        throw new Exception("Not odd value;");
-                    Thread.Sleep(sleepTimeout);
-                    Console.Write(x);
-                });
-            }
+                if (x != 0)
+                    throw new Exception("Not odd value;");
+                Console.Write(x);
+            });
         });
         tasks[1] = Task.Run(() =>
         {
-            for (int i = 0; i < input; i++)
+            ZeroEvenOdd.Even(x =>
             {
-                ZeroEvenOdd.Even(x =>
-                {
-                    if (x % 2 != 0)
-                        throw new Exception("Not even value;");
-                    Thread.Sleep(sleepTimeout);
-                    Console.Write(x);
-                });
-            }
+                if (x % 2 != 0)
+                    throw new Exception("Not even value;");
+                Console.Write(x);
+            });
         });
         tasks[2] = Task.Run(() =>
         {
-            for (int i = 0; i < input; i++)
+            ZeroEvenOdd.Odd(x =>
             {
-                ZeroEvenOdd.Odd(x =>
-                {
-                    if (x % 2 != 1)
-                        throw new Exception("Not odd value;");
-                    Thread.Sleep(sleepTimeout);
-                    Console.Write(x);
-                });
-            }
+                if (x % 2 != 1)
+                    throw new Exception("Not odd value;");
+                Console.Write(x);
+            });
         });
 
         Task.WaitAll(tasks);

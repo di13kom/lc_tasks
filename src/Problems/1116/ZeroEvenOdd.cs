@@ -10,7 +10,7 @@ public class ZeroEvenOdd
     readonly SemaphoreSlim _evenSemaphore = new(0, 1);
     readonly SemaphoreSlim _oddSemaphore = new(0, 1);
 
-    private int _semaphoreTimeout = 250;
+    private int _semaphoreTimeout = 10;
     private int _zeroSemaphoreTimeout;
     private int _eventSemaphoreTimeout;
     private int _oddSemaphoreTimeout;
@@ -29,38 +29,50 @@ public class ZeroEvenOdd
 
     public void Zero(Action<int> printNumber)
     {
-        if (!_zeroSemaphore.Wait(_zeroSemaphoreTimeout))
-            return;
-        _zeroSemaphoreTimeout += _semaphoreTimeout;
+        while (Interlocked.Read(ref countUp) < n)
+        {
+            if (!_zeroSemaphore.Wait(_zeroSemaphoreTimeout))
+                return;
 
-        printNumber(0);
+            printNumber(0);
 
-        if (Interlocked.Increment(ref countUp) % 2 == 0)
-            _evenSemaphore.Release();
-        else
-            _oddSemaphore.Release();
+            if (Interlocked.Increment(ref countUp) % 2 == 0)
+                _evenSemaphore.Release();
+            else
+                _oddSemaphore.Release();
+
+            Thread.Sleep(1);
+        }
 
     }
 
     public void Even(Action<int> printNumber)
     {
-        if (!_evenSemaphore.Wait(_eventSemaphoreTimeout))
-            return;
-        _eventSemaphoreTimeout += _semaphoreTimeout;
+        while (Interlocked.Read(ref countUp) < n)
+        {
+            if (!_evenSemaphore.Wait(_eventSemaphoreTimeout))
+                return;
 
-        printNumber(Ints.Dequeue());
+            printNumber(Ints.Dequeue());
 
-        _zeroSemaphore.Release();
+            _zeroSemaphore.Release();
+
+            Thread.Sleep(1);
+        }
     }
 
     public void Odd(Action<int> printNumber)
     {
-        if (!_oddSemaphore.Wait(_oddSemaphoreTimeout))
-            return;
-        _oddSemaphoreTimeout += _semaphoreTimeout;
+        while (Interlocked.Read(ref countUp) <= n)
+        {
+            if (!_oddSemaphore.Wait(_oddSemaphoreTimeout))
+                return;
 
-        printNumber(Ints.Dequeue());
+            printNumber(Ints.Dequeue());
 
-        _zeroSemaphore.Release();
+            _zeroSemaphore.Release();
+
+            Thread.Sleep(1);
+        }
     }
 }

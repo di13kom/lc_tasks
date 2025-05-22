@@ -5,52 +5,45 @@ namespace LeetCode.Problems._1116;
 public class ZeroEvenOdd1
 {
     private int n;
-    private readonly Queue<int> Ints;
-    private long _zeroOperationAvaliable;
-    long countUp;
+    readonly SemaphoreSlim _zeroSemaphore = new(1, 1);
+    readonly SemaphoreSlim _evenSemaphore = new(0, 1);
+    readonly SemaphoreSlim _oddSemaphore = new(0, 1);
 
     public ZeroEvenOdd1(int n)
     {
         this.n = n;
-        Ints = new Queue<int>(Enumerable.Range(1, 2 * n));
-        _zeroOperationAvaliable = 1;
-        countUp = 0;
     }
 
-    // printNumber(x) outputs "x", where x is an integer.
     public void Zero(Action<int> printNumber)
     {
-        if (Interlocked.Read(ref countUp) > 0)
+        for (int i = 1; i <= n; i++)
         {
-            Thread.Sleep(10);
+            _zeroSemaphore.Wait();
+            printNumber(0);
+            if (i % 2 == 1)
+                _oddSemaphore.Release();
+            else
+                _evenSemaphore.Release();
         }
-
-        printNumber(0);
-
-        Interlocked.Increment(ref countUp);
     }
 
     public void Even(Action<int> printNumber)
     {
-        while (Interlocked.Read(ref countUp) < 1)
+        for (int i = 2; i <= n; i+=2)
         {
-            Thread.Sleep(10);
+            _evenSemaphore.Wait();
+            printNumber(i);
+            _zeroSemaphore.Release();
         }
-
-        printNumber(Ints.Dequeue());
-
-        Interlocked.Decrement(ref _zeroOperationAvaliable);
     }
 
     public void Odd(Action<int> printNumber)
     {
-        while (Interlocked.Read(ref countUp) < 2)
+        for (int i = 1; i <= n; i+=2)
         {
-            Thread.Sleep(10);
+            _oddSemaphore.Wait();
+            printNumber(i);
+            _zeroSemaphore.Release();
         }
-
-        printNumber(Ints.Dequeue());
-
-        Interlocked.Exchange(ref countUp, 0);
     }
 }
