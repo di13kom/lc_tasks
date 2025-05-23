@@ -40,8 +40,6 @@ public class ZeroEvenOdd
                 _evenSemaphore.Release();
             else
                 _oddSemaphore.Release();
-
-            Thread.Sleep(1);
         }
 
     }
@@ -56,8 +54,6 @@ public class ZeroEvenOdd
             printNumber(Ints.Dequeue());
 
             _zeroSemaphore.Release();
-
-            Thread.Sleep(1);
         }
     }
 
@@ -71,8 +67,6 @@ public class ZeroEvenOdd
             printNumber(Ints.Dequeue());
 
             _zeroSemaphore.Release();
-
-            Thread.Sleep(1);
         }
     }
 }

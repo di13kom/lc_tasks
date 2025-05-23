@@ -1,3 +1,4 @@
+using System.Text;
 using LeetCode.Problems._1;
 using LeetCode.Problems._1116;
 
@@ -15,6 +16,7 @@ public class Problem1116UnitTests
     [TestCase(5, "0102030405")]
     public void Test1(int input, string expected)
     {
+        StringBuilder chars = new StringBuilder();
         Task[] tasks = new Task[3];
         var ZeroEvenOdd = new ZeroEvenOdd(input);
         tasks[0] = Task.Run(() =>
@@ -24,6 +26,7 @@ public class Problem1116UnitTests
                 if (x != 0)
                     throw new Exception("Not odd value;");
                 Console.Write(x);
+                chars.Append(x);
             });
         });
         tasks[1] = Task.Run(() =>
@@ -33,6 +36,7 @@ public class Problem1116UnitTests
                 if (x % 2 != 0)
                     throw new Exception("Not even value;");
                 Console.Write(x);
+                chars.Append(x);
             });
         });
         tasks[2] = Task.Run(() =>
@@ -42,10 +46,11 @@ public class Problem1116UnitTests
                 if (x % 2 != 1)
                     throw new Exception("Not odd value;");
                 Console.Write(x);
+                chars.Append(x);
             });
         });
 
         Task.WaitAll(tasks);
-        Assert.Pass();
+        Assert.That(chars.ToString(), Is.EqualTo(expected));
     }
 }
