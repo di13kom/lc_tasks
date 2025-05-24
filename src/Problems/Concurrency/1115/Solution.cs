@@ -1,6 +1,6 @@
 using System;
 
-namespace LeetCode.Problems._1115;
+namespace LeetCode.Problems.Concurrency._1115;
 
 public class FooBar {
     private int n;

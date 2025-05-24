@@ -1,6 +1,5 @@
 using System.Text;
-using LeetCode.Problems._1;
-using LeetCode.Problems._1116;
+using LeetCode.Problems.Concurrency._1116;
 
 namespace ProblemsUnitTests._1116;
 

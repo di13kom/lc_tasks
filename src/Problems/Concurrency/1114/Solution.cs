@@ -1,6 +1,6 @@
 using System.Threading;
 
-namespace LeetCode.Problems._1114;
+namespace LeetCode.Problems.Concurrency._1114;
 
 public class Foo
 {

@@ -1,6 +1,6 @@
 using System.Threading;
 
-namespace LeetCode.Problems._1116;
+namespace LeetCode.Problems.Concurrency._1116;
 
 public class ZeroEvenOdd
 {
