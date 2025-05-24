@@ -16,7 +16,7 @@ public class Problem1195UnitTests
         List<string> strings = [];
         Task[] tasks = new Task[4];
         int sleepTimeout = 10;
-        var problemClass = new FizzBuzz0(input);
+        var problemClass = new FizzBuzz(input);
         tasks[0] = Task.Run(() =>
         {
             //for (int i = 0; i < input; i++)
