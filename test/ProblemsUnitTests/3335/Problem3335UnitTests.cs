@@ -17,6 +17,7 @@ public class Problem3335UnitTests
     [TestCase("z", 750, 16777216)]
     [TestCase("ab", 350, 16385)]
     [TestCase("aa", 350, 16384)]
+    [Timeout(10000)]
     public void Test1(string input, int transformationCnt, int expected)
     {
         //Assert.That(new Solution2().LengthAfterTransformations(input, transformationCnt), Is.EqualTo(expected));
