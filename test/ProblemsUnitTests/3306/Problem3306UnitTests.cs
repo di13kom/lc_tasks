@@ -1,5 +1,5 @@
 ﻿using LeetCode.Problems._3306;
-namespace ProblemsUnitTests;
+namespace ProblemsUnitTests._3306;
 
 
 public class Problem3306UnitTests

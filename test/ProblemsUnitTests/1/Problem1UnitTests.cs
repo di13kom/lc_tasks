@@ -1,7 +1,7 @@
 using NUnit.Framework;
 using LeetCode.Problems._1;
 
-namespace ProblemsUnitTests;
+namespace ProblemsUnitTests._1;
 
 public class Problem1UnitTests
 {
