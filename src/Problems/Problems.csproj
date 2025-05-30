@@ -2,13 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
-    <RootNamespace>_1</RootNamespace>
+    <RootNamespace>LeetCode.Problems</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Concurrency\" />
-  </ItemGroup>
 
 </Project>
