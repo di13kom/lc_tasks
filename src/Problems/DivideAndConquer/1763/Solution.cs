@@ -1,45 +1,42 @@
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-
 namespace LeetCode.Problems.DivideAndConquer._1763;
 
 public class Solution
 {
-    private struct CharDescription
-    {
-        public bool IsWithDiffCase = false;
-        public int Count = 0;
-
-        public CharDescription()
-        {
-        }
-    };
     private const int AsciiLowUpDiff = 32;
 
     public string LongestNiceSubstring(string s)
     {
-        Dictionary<char, List<int>> dict = [];
-        List<string> retVal = [];
+        var length = s.Length;
+        string retVal = string.Empty;
+        HashSet<int> upperChars = [];
+        HashSet<int> lowerChars = [];
 
-        for (int i = 0; i < s.Length; i++)
+        for (int i = 0; i < length; i++)
         {
-            if (!dict.TryAdd(s[i], [i]))
+            _ = s[i] >= 'a' ? lowerChars.Add(s[i]) : upperChars.Add(s[i]);
+            for (int j = i + 1; j < length; j++)
             {
-                dict[s[i]].Add(i);
+                _ = s[j] >= 'a' ? lowerChars.Add(s[j]) : upperChars.Add(s[j]);
+                if (upperChars.Count == lowerChars.Count && IsNiceSubstring(upperChars, lowerChars))
+                {
+                    if ((j + 1 - i) > retVal.Length)
+                        retVal = s[i..(j + 1)];
+                }
             }
+            upperChars.Clear();
+            lowerChars.Clear();
         }
 
-        foreach (KeyValuePair<char, List<int>> dictItem in dict)
+        return retVal;
+    }
+
+    static bool IsNiceSubstring(HashSet<int> chars, HashSet<int> lowerChars)
+    {
+        foreach (var item in chars)
         {
-            char key = (char)(dictItem.Key ^ AsciiLowUpDiff);
-            if (dict.ContainsKey(key))
-            {
-                Console.WriteLine($"Key: '{dictItem.Key}' has counterPart with key: '{key}'");
-            }
+            if (!lowerChars.Contains(item ^ AsciiLowUpDiff))
+                return false;
         }
-        //isUpperCaseChar = (s[i] & AsciiLowUpDiff) == 0;
-
-
-        return retVal.MaxBy(x => x.Length) ?? string.Empty;
+        return true;
     }
 }

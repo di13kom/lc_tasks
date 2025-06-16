@@ -9,11 +9,26 @@ public class Promblem1763UnitTests
     {
     }
 
-    [TestCase("YazaAay", "aAa")]
-    [TestCase("Bb", "Bb")]
-    [TestCase("c", "")]
-    public void Test1(string input, string expected)
+    [TestCaseSource(nameof(GetTestCaseDatas))]
+    public void SolutionTest((string input, string expected) td)
     {
-        Assert.That(new Solution().LongestNiceSubstring(input), Is.EqualTo(expected));
+        Assert.That(new Solution().LongestNiceSubstring(td.input), Is.EqualTo(td.expected));
+    }
+
+    [TestCaseSource(nameof(GetTestCaseDatas))]
+    public void Solution1Tests((string input, string expected) td)
+    {
+        Assert.That(new Solution1().LongestNiceSubstring(td.input), Is.EqualTo(td.expected));
+    }
+
+    private static IEnumerable<(string, string)> GetTestCaseDatas()
+    {
+        yield return ("YazaAay", "aAa");
+        yield return ("Bb", "Bb");
+        yield return ("BubUYyHk", "BubUYy");
+        yield return ("HkhBubUYyHkh", "hBubUYyH");
+        yield return ("xLeElzxgHzcWslEdgMGwEOZCXwwDMwcEhgJHLL", "LeEl");
+        yield return ("c", "");
     }
 }
+
