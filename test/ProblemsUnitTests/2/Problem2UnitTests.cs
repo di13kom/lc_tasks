@@ -1,6 +1,6 @@
-using NUnit.Framework;
 using LeetCode.Problems._2;
 using System.Text;
+using LeetCode.Problems.Common;
 
 namespace ProblemsUnitTests._2;
 
