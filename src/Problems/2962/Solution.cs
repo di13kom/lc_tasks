@@ -4,69 +4,43 @@ public class Solution
 {
     public long CountSubarrays(int[] nums, int k)
     {
-        int Length = nums.Length;
-        int leftIndex = Length / 2;
-        int rightIndex = leftIndex;
-        SortedDictionary<int, int> dict = [];
+        var length = nums.Length;
+        int maxValue = nums.Max();
         long retVal = 0;
-        int iter = 0;
-        List<int> maxIndex = [];
-        for (int i = 0; i < Length; i++)
+        long matchesByRow = -1;
+        int FirstMaxIndex = -1;
+        long maxCount = -1;
+
+        for (int i = 0; i < length; i++)
         {
-            int item = nums[i];
-            if (!dict.TryAdd(item, 1))
+            if (FirstMaxIndex >= i && maxCount >= k)//at least the same sum
             {
-                dict[item]++;
+                retVal += matchesByRow;
+                continue;
             }
-        }
-        var maxValue = dict.Last();
-
-        if (maxValue.Value < k)
-            return 0;
-
-        if (nums[leftIndex] == maxValue.Key)
-            maxIndex.Add(leftIndex);
-        while (leftIndex > 0 && rightIndex < Length)
-        {
-
-            if (++iter % 2 == 0)
+            else if (maxCount != -1 && maxCount < k)// no chance to find
             {
-                if (nums[--leftIndex] == maxValue.Key)
-                    maxIndex.Add(leftIndex);
-                retVal += IterateString(leftIndex, rightIndex, maxIndex);
+                break;
             }
-            else
+            maxCount = 0;
+            matchesByRow = 0;
+            FirstMaxIndex = -1;
+            for (int j = i; j < length; j++)
             {
-                if (nums[++rightIndex] == maxValue.Key)
-                    maxIndex.Add(rightIndex);
-                retVal += IterateString(rightIndex, leftIndex, maxIndex);
+                if (nums[j] == maxValue)
+                {
+                    maxCount++;
+                    if (FirstMaxIndex == -1)
+                        FirstMaxIndex = j;
+                }
+
+                if (maxCount >= k)
+                {
+                    matchesByRow += length - j;
+                    break;
+                }
             }
-        }
-
-
-        return retVal;
-    }
-
-    private int IterateString(int startIndex, int stopIndex, IEnumerable<int> targetIndex)
-    {
-        int retVal = 0;
-
-        if (startIndex < stopIndex)
-        {
-            for (int i = startIndex; i < stopIndex; i++)
-            {
-                //retVal += targetIndex.All(x => x >= startIndex && x <= stopIndex) ? 1 : 0;
-                retVal += targetIndex.First() >= i && targetIndex.Last() <= stopIndex ? 1 : 0;
-            }
-        }
-        else
-        {
-            for (int i = stopIndex; i > startIndex; i--)
-            {
-                //retVal += targetIndex.All(x => x >= startIndex && x <= stopIndex) ? 1 : 0;
-                retVal += targetIndex.First() >= i && targetIndex.Last() <= stopIndex ? 1 : 0;
-            }
-
+            retVal += matchesByRow;
         }
 
         return retVal;
