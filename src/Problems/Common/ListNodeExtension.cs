@@ -31,4 +31,16 @@ public static class ListNodeExtension
 
         return retVal.ToArray();
     }
+
+    public static ListNode Concat(this ListNode lst0, ListNode lst1)
+    {
+        var head = lst0;
+        while (lst0.next is not null)
+        {
+            lst0 = lst0.next;
+        }
+        lst0.next = lst1;
+
+        return head;
+    }
 }

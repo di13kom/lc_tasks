@@ -24,9 +24,4 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\Problems\Problems.csproj" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="13\" />
-  </ItemGroup>
-
 </Project>
