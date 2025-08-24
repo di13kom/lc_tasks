@@ -17,18 +17,6 @@ public class Solution
         {
             if ((sum - sumValuesLeft - nums[i] - sumValuesLeft + nums[i]) % 2 == 0)
                 retVal++;
-            /*
-            if (nums[i] % 2 == 0)
-            {
-                retVal++;
-                sumValuesLeft += nums[i];
-            }
-            else if (nums[i + 1] % 2 != 0 || sumValuesLeft % 2 != 0)
-            {
-                retVal++;
-                sumValuesLeft += nums[i];
-            }
-            */
         }
 
         return retVal;

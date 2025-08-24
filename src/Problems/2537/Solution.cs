@@ -1,6 +1,3 @@
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-
 namespace LeetCode.Problems._2537;
 public class Solution
 {
@@ -31,6 +28,7 @@ public class Solution
             var pairs = CountFreq(cnt);
             retVal += pairs;
         }
+        Console.WriteLine($"StartIndex:{startIndex}, retVal:{retVal}, k:{k}");
 
         return (retVal >= k ? 1 : 0) + CountSubArray(nums, ++startIndex, k);
     }

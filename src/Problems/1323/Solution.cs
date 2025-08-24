@@ -1,5 +1,3 @@
-using System.Globalization;
-
 namespace LeetCode.Problems._1323;
 
 public class Solution
