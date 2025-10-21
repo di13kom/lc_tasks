@@ -4,101 +4,68 @@ namespace LeetCode.Problems.Tree;
 
 public class TreeNodeFactory
 {
-    TreeNode retVal;
-    List<TreeNode> treeNodes;
-    int currentDepth = 0;
-    public TreeNode CreateBinaryTreeNodeByArray(int?[] array)
+    public static TreeNode CreateBinaryTreeNodeFromArray(int?[] array)
     {
-        treeNodes = [];
-        var IscreateNodeSuccess = true;
-        while (IscreateNodeSuccess)
-        {
-            IscreateNodeSuccess = CreateNode(array);
-        }
-        ;
+        int length = array.Length;
 
-
-        return retVal;
-    }
-    private bool CreateNode(int?[] array)
-    {
-        int curQuantity = (int)Math.Pow(2, currentDepth);
-
-        if (curQuantity >= array.Length)
-            return false;
-
-        for (int i = curQuantity - 1; i < curQuantity * 2 - 1; i++)
-        {
-            var curValue = array[i];
-            //if (curValue != null)
-            //{
-            var nd = new TreeNode(curValue.Value);
-            treeNodes.Add(nd);
-            FindParent(nd);
-            //}
-        }
-
-        currentDepth++;
-
-        return true;
-    }
-
-    private void FindParent(TreeNode node)
-    {
-        var prevDepthLevel = currentDepth - 1;
-        if (prevDepthLevel == -1)
-            retVal = node;
-        int preQuantity = (int)Math.Pow(2, prevDepthLevel);
-        for (int i = preQuantity - 1; i < preQuantity * 2 - 1; i++)
-        {
-            var cNode = treeNodes.ElementAt(i);
-            if (cNode == null)
-                continue;
-            if (cNode.right is null)
-            {
-                cNode.right = node;
-                break;
-            }
-            else if (cNode.left is null)
-            {
-                cNode.left = node;
-                break;
-            }
-        }
-    }
-
-    /*
-    public TreeNode CreateBinaryTreeNodeByArrayWithIteration(int?[] array)
-    {
-        if (array is null || array[0] is null)
+        if (length < 1 || array.ElementAt(0) is null)
             return null;
-        TreeNode retVal = new(array[0].Value);
-        var curNode = retVal;
-        array = array[1..];
-        int curDepth = 1;
-        int curNodeNumInDepth = 1;
+        var root = new TreeNode(array[0].Value);
+        Queue<TreeNode> nodesQueue = new Queue<TreeNode>([root]);
 
-        for (int i = 1, j = 2; i < array.Length; i += 2, j += 2)
+        int k = 1;
+
+        while (k < length)
         {
-            curNode = FindNode(retVal);
-            curNode.left = array[i].HasValue ? new(array[i].Value) : null;
-            curNode.right = array[j].HasValue ? new(array[j].Value) : null;
+            var levelCount = nodesQueue.Count;
+            for (int i = 0; i < levelCount; i++)
+            {
+                if (nodesQueue.TryDequeue(out var parentNode) && parentNode is not null)
+                {
+                    if (k >= length)
+                        break;
+                    var leftValue = array[k++];
+                    TreeNode leftNode = leftValue.HasValue ? new TreeNode(leftValue.Value) : null;
+                    parentNode.left = leftNode;
+                    nodesQueue.Enqueue(leftNode);
+
+                    if (k >= length)
+                        break;
+                    var rightValue = array[k++];
+                    TreeNode rightNode = rightValue.HasValue ? new TreeNode(rightValue.Value) : null;
+                    parentNode.right = rightNode;
+                    nodesQueue.Enqueue(rightNode);
+                }
+            }
+        }
+
+        return root;
+    }
+    public static IEnumerable<int?> CreateEnumerableFromBinaryTreeNode(TreeNode root)
+    {
+        Queue<TreeNode> nodesQueue = new Queue<TreeNode>([root]);
+        List<int?> retVal = [];
+        var levelCount = nodesQueue.Count;
+        while (levelCount > 0)
+        {
+            bool isNewLevelAdded = false;
+            for (int i = 0; i < levelCount; i++)
+            {
+                if (nodesQueue.TryDequeue(out TreeNode node))
+                {
+                    retVal.Add(node?.val);
+                    if (node is not null && (node.left is not null || node.right is not null || isNewLevelAdded))
+                    {
+                        nodesQueue.Enqueue(node.left);
+                        nodesQueue.Enqueue(node.right);
+                        isNewLevelAdded = true;
+                    }
+                }
+            }
+
+            levelCount = nodesQueue.Count;
         }
 
         return retVal;
-
     }
-
-    private TreeNode FindNode(TreeNode targetTree)
-    {
-        TreeNode curNode = targetTree;
-        int curQuantity = (int)Math.Pow(2, currentDepth);
-        int i;
-        if (i/2 == 1)
-            curNode = curNode.left;
-        else
-            curNode = curNode.right;
-
-    }
-    */
 }
